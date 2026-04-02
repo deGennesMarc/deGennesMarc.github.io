@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blob</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧴</text></svg>" />
+    <!-- Font Awesome: icon library loaded from the internet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body>
+
+    <div class="layout">
+
+      <!-- Left: video (3/4 of the page) -->
+      <div class="video-panel" id="videoPanel">
+
+        <video id="mainVideo" autoplay muted loop playsinline>
+          <source src="piscine.mp4" type="video/mp4" />
+        </video>
+
+        <!-- Logo/photo overlaid on top of the video -->
+        <img src="blob.png" alt="Logo Blob" class="overlay-photo" />
+
+        <!-- Sound toggle button, bottom-right corner of the video -->
+        <button class="sound-btn" id="soundBtn" aria-label="Activer le son">
+          <i class="fa-solid fa-volume-xmark" id="soundIcon"></i>
+        </button>
+
+      </div>
+
+      <!-- Right: company info panel (1/4 of the page) -->
+      <aside class="sidebar">
+
+        <h1>Bureau Laboratoire en Olfaction et Bien-être</h1>
+
+        <nav>
+
+          <details>
+            <summary>Services</summary>
+            <ul>
+              <li>Identité olfactive</li>
+              <li>Création de parfum</li>
+              <li>Développement produit</li>
+              <li>Consulting en stratégie</li>
+              <li>Évènements parfumés</li>
+              <li>Écriture</li>
+              <li>Conférences et ateliers</li>
+              <li>Travaux de recherche</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>À propos</summary>
+            <p>Contenu à venir.</p>
+          </details>
+
+          <details>
+            <summary>Contact</summary>
+            <div class="contact-info">
+              <a href="mailto:jacquemartd@gmail.com" class="contact-email">
+                jacquemartd [at] gmail.com
+              </a>
+              <div class="contact-socials">
+                <a href="https://www.instagram.com/blob.paris/" target="_blank" aria-label="Instagram">
+                  <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/delphine-jacquemart-aa969170/" target="_blank" aria-label="LinkedIn">
+                  <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+              </div>
+            </div>
+          </details>
+
+        </nav>
+
+      </aside>
+
+    </div>
+
+    <!-- JavaScript: sound toggle logic -->
+    <script>
+      const video    = document.getElementById('mainVideo');
+      const btn      = document.getElementById('soundBtn');
+      const icon     = document.getElementById('soundIcon');
+      const panel    = document.getElementById('videoPanel');
+
+      function toggleSound() {
+        video.muted = !video.muted;
+        // Swap the icon depending on state
+        if (video.muted) {
+          icon.className = 'fa-solid fa-volume-xmark';
+        } else {
+          icon.className = 'fa-solid fa-volume-high';
+        }
+      }
+
+      // Clicking anywhere on the video panel, or the button, toggles sound
+      panel.addEventListener('click', toggleSound);
+    </script>
+
+  </body>
+</html>

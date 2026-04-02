@@ -1,0 +1,252 @@
+/* Basic reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Georgia, serif;
+  background-color: #f9f9f9;
+  color: #222;
+  height: 100vh;           /* full viewport height */
+  overflow: hidden;        /* no scrollbar on the body */
+}
+
+/* ── Main layout: two columns side by side ── */
+.layout {
+  display: flex;           /* puts children side by side */
+  height: 100vh;           /* fills the entire screen height */
+}
+
+/* ── Left panel: video (75% wide) ── */
+.video-panel {
+  width: 75%;
+  position: relative;      /* needed so the future overlay photo can be positioned on top */
+  background-color: #000;  /* black background while video loads */
+}
+
+.video-panel video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* fills the panel without distortion, crops if needed */
+}
+
+/* Logo overlaid on the video */
+.overlay-photo {
+  position: absolute;      /* sits on top of the video */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  /* perfectly centered */
+  width: 440px;
+  height: 440px;
+  object-fit: contain;     /* keeps the logo proportions intact */
+  opacity: 0.18;           /* very transparent — video shows through */
+  pointer-events: none;    /* clicks pass through to the video below */
+}
+
+/* Sound toggle button */
+.sound-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.4);   /* semi-transparent dark background */
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;       /* smooth color change on hover */
+}
+
+.sound-btn:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+/* Make the whole video panel show a pointer cursor (clickable) */
+.video-panel {
+  cursor: pointer;
+}
+
+/* ── Right panel: sidebar / bordereau (25% wide) ── */
+.sidebar {
+  width: 25%;
+  padding: 40px 30px;
+  border-left: 1px solid #ddd;
+  background-color: #fff;
+  overflow-y: auto;        /* scrollable if content is taller than the screen */
+  display: flex;
+  flex-direction: column;  /* stacks children vertically */
+  gap: 20px;               /* space between children */
+}
+
+/* Company title at the top of the sidebar */
+.sidebar h1 {
+  font-size: 1rem;
+  font-weight: normal;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: #222;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* The nav block that holds all three accordions */
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Each accordion item */
+.sidebar details {
+  border-bottom: 1px solid #ddd;
+}
+
+/* The clickable header row */
+.sidebar summary {
+  padding: 14px 0;
+  cursor: pointer;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #222;
+  list-style: none;          /* removes the default triangle on some browsers */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Custom arrow — shows + when closed, − when open */
+.sidebar summary::after {
+  content: '+';
+  font-size: 1.1rem;
+  color: #aaa;
+}
+.sidebar details[open] summary::after {
+  content: '−';
+}
+
+/* Content revealed when open */
+.sidebar details[open] > *:not(summary) {
+  padding: 8px 0 20px 0;
+}
+
+/* Bullet list inside Services */
+.sidebar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar ul li {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+  padding-left: 12px;
+  position: relative;
+}
+
+/* Small dot before each list item */
+.sidebar ul li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: #aaa;
+}
+
+/* Plain text inside À propos / Contact */
+.sidebar details p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #777;
+}
+
+/* Contact section */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-email {
+  font-size: 0.85rem;
+  color: #555;
+  text-decoration: none;     /* no underline by default */
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 2px;
+}
+
+.contact-email:hover {
+  color: #222;
+  border-bottom-color: #222;
+}
+
+/* Row of social icons */
+.contact-socials {
+  display: flex;
+  gap: 18px;
+}
+
+.contact-socials a {
+  color: #aaa;
+  font-size: 1.3rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contact-socials a:hover {
+  color: #222;
+}
+
+/* ── Mobile: portrait (phone held upright) ── */
+@media (max-width: 768px) and (orientation: portrait) {
+  body {
+    overflow: auto;          /* allow the page to scroll */
+    height: auto;
+  }
+
+  .layout {
+    flex-direction: column;  /* stack video on top, sidebar below */
+    height: auto;
+  }
+
+  .video-panel {
+    width: 100%;             /* video takes full width */
+    height: 56vw;            /* height proportional to width, like a 16:9 video */
+  }
+
+  .overlay-photo {
+    width: 180px;
+    height: 180px;
+  }
+
+  .sidebar {
+    width: 100%;             /* sidebar takes full width below the video */
+    overflow-y: visible;     /* no need for inner scroll — the page itself scrolls */
+    padding: 30px 20px;
+  }
+}
+
+/* ── Mobile: landscape (phone held sideways) ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    overflow: hidden;        /* keep the page itself fixed */
+    height: 100vh;
+  }
+
+  .layout {
+    height: 100vh;
+  }
+
+  .sidebar {
+    overflow-y: auto;        /* sidebar scrolls independently within its column */
+    height: 100vh;
+  }
+}
