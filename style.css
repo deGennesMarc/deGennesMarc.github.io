@@ -32,19 +32,6 @@ body {
   object-fit: cover;       /* fills the panel without distortion, crops if needed */
 }
 
-/* Logo overlaid on the video */
-.overlay-photo {
-  position: absolute;      /* sits on top of the video */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);  /* perfectly centered */
-  width: 440px;
-  height: 440px;
-  object-fit: contain;     /* keeps the logo proportions intact */
-  opacity: 0.18;           /* very transparent — video shows through */
-  pointer-events: none;    /* clicks pass through to the video below */
-}
-
 /* Sound toggle button */
 .sound-btn {
   position: absolute;
@@ -83,6 +70,13 @@ body {
   display: flex;
   flex-direction: column;  /* stacks children vertically */
   gap: 20px;               /* space between children */
+}
+
+.sidebar-logo {
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Company title at the top of the sidebar */
@@ -222,15 +216,14 @@ body {
     height: 56vw;            /* height proportional to width, like a 16:9 video */
   }
 
-  .overlay-photo {
-    width: 180px;
-    height: 180px;
-  }
-
   .sidebar {
     width: 100%;             /* sidebar takes full width below the video */
     overflow-y: visible;     /* no need for inner scroll — the page itself scrolls */
     padding: 30px 20px;
+  }
+
+  .sidebar-logo {
+    width: 120px;
   }
 }
 
