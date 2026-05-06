@@ -1,3 +1,16 @@
+/* ── Design tokens ── */
+:root {
+  --cream:      #faf7f2;
+  --ivory:      #f4efe6;
+  --border:     #e2d9cc;
+  --text-dark:  #1e1a16;
+  --text-mid:   #5c5248;
+  --text-light: #9c8e81;
+  --accent:     #8b6f47;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', sans-serif;
+}
+
 /* Basic reset */
 * {
   box-sizing: border-box;
@@ -6,30 +19,56 @@
 }
 
 body {
-  font-family: Georgia, serif;
-  background-color: #f9f9f9;
-  color: #222;
-  height: 100vh;           /* full viewport height */
-  overflow: hidden;        /* no scrollbar on the body */
+  font-family: var(--font-body);
+  font-weight: 300;
+  background-color: var(--cream);
+  color: var(--text-dark);
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ── Main layout: two columns side by side ── */
 .layout {
-  display: flex;           /* puts children side by side */
-  height: 100vh;           /* fills the entire screen height */
+  display: flex;
+  height: 100vh;
 }
 
 /* ── Left panel: video (75% wide) ── */
 .video-panel {
   width: 75%;
-  position: relative;      /* needed so the future overlay photo can be positioned on top */
-  background-color: #000;  /* black background while video loads */
+  position: relative;
+  background-color: #000;
+  cursor: pointer;
 }
 
 .video-panel video {
   width: 100%;
   height: 100%;
-  object-fit: cover;       /* fills the panel without distortion, crops if needed */
+  object-fit: cover;
+}
+
+/* Sound hint overlay */
+.sound-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  white-space: nowrap;
+}
+
+.sound-hint.hidden {
+  opacity: 0;
 }
 
 /* Sound toggle button */
@@ -37,201 +76,232 @@ body {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background: rgba(0, 0, 0, 0.4);   /* semi-transparent dark background */
-  border: none;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   width: 40px;
   height: 40px;
   color: #fff;
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;       /* smooth color change on hover */
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .sound-btn:hover {
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* Make the whole video panel show a pointer cursor (clickable) */
-.video-panel {
-  cursor: pointer;
-}
-
-/* ── Right panel: sidebar / bordereau (25% wide) ── */
+/* ── Right panel: sidebar (25% wide) ── */
 .sidebar {
   width: 25%;
-  padding: 40px 30px;
-  border-left: 1px solid #ddd;
-  background-color: #fff;
-  overflow-y: auto;        /* scrollable if content is taller than the screen */
+  padding: 40px 32px;
+  border-left: 1px solid var(--border);
+  background-color: var(--cream);
+  overflow-y: auto;
   display: flex;
-  flex-direction: column;  /* stacks children vertically */
-  gap: 20px;               /* space between children */
+  flex-direction: column;
+  gap: 24px;
 }
 
 .sidebar-logo {
-  width: 220px;
+  width: 200px;
   max-width: 100%;
   height: auto;
   object-fit: contain;
   align-self: center;
 }
 
-/* Company title at the top of the sidebar */
+/* Company title */
 .sidebar h1 {
-  font-size: 1rem;
-  font-weight: normal;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  color: #222;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  color: var(--text-mid);
   padding-bottom: 24px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 
-/* The nav block that holds all three accordions */
+/* Accordion nav */
 .sidebar nav {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
-/* Each accordion item */
 .sidebar details {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 
-/* The clickable header row */
+/* Prevent default disclosure triangle */
 .sidebar summary {
-  padding: 14px 0;
+  list-style: none;
+}
+.sidebar summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar summary {
+  padding: 15px 0;
   cursor: pointer;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #222;
-  list-style: none;          /* removes the default triangle on some browsers */
+  color: var(--text-dark);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: color 0.2s;
 }
 
-/* Custom arrow — shows + when closed, − when open */
+.sidebar summary:hover {
+  color: var(--accent);
+}
+
+/* Custom +/− indicator */
 .sidebar summary::after {
   content: '+';
-  font-size: 1.1rem;
-  color: #aaa;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-light);
+  transition: color 0.2s, transform 0.3s;
 }
+
 .sidebar details[open] summary::after {
   content: '−';
+  color: var(--accent);
 }
 
-/* Content revealed when open */
-.sidebar details[open] > *:not(summary) {
-  padding: 8px 0 20px 0;
+/* Animated accordion body */
+.accordion-body {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s ease;
 }
 
-/* Bullet list inside Services */
+/* Content padding inside open accordion */
+.accordion-body > * {
+  padding: 6px 0 20px 0;
+}
+
+/* Services list */
 .sidebar ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 9px;
 }
 
 .sidebar ul li {
-  font-size: 0.9rem;
-  color: #555;
-  line-height: 1.4;
-  padding-left: 12px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--text-mid);
+  line-height: 1.5;
+  padding-left: 14px;
   position: relative;
 }
 
-/* Small dot before each list item */
 .sidebar ul li::before {
-  content: '·';
+  content: '—';
   position: absolute;
   left: 0;
-  color: #aaa;
+  color: var(--accent);
+  font-size: 0.7rem;
+  top: 2px;
 }
 
-/* Plain text inside À propos / Contact */
+/* À propos text */
 .sidebar details p {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: #777;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-mid);
+  font-style: italic;
 }
 
 /* Contact section */
 .contact-info {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-.contact-email {
-  font-size: 0.85rem;
-  color: #555;
-  text-decoration: none;     /* no underline by default */
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 2px;
-}
-
-.contact-email:hover {
-  color: #222;
-  border-bottom-color: #222;
-}
-
-/* Row of social icons */
-.contact-socials {
-  display: flex;
   gap: 18px;
 }
 
+.contact-email {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--text-mid);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+  display: inline-block;
+}
+
+.contact-email:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Social icons row */
+.contact-socials {
+  display: flex;
+  gap: 20px;
+}
+
 .contact-socials a {
-  color: #aaa;
-  font-size: 1.3rem;
+  color: var(--text-light);
+  font-size: 1.2rem;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .contact-socials a:hover {
-  color: #222;
+  color: var(--accent);
 }
 
-/* ── Mobile: portrait (phone held upright) ── */
+/* ── Mobile: portrait ── */
 @media (max-width: 768px) and (orientation: portrait) {
   body {
-    overflow: auto;          /* allow the page to scroll */
+    overflow: auto;
     height: auto;
   }
 
   .layout {
-    flex-direction: column;  /* stack video on top, sidebar below */
+    flex-direction: column;
     height: auto;
   }
 
   .video-panel {
-    width: 100%;             /* video takes full width */
-    height: 56vw;            /* height proportional to width, like a 16:9 video */
+    width: 100%;
+    height: 56vw;
   }
 
   .sidebar {
-    width: 100%;             /* sidebar takes full width below the video */
-    overflow-y: visible;     /* no need for inner scroll — the page itself scrolls */
-    padding: 30px 20px;
+    width: 100%;
+    overflow-y: visible;
+    padding: 30px 24px;
   }
 
   .sidebar-logo {
-    width: 200px;
+    width: 180px;
   }
 }
 
-/* ── Mobile: landscape (phone held sideways) ── */
+/* ── Mobile: landscape ── */
 @media (max-height: 500px) and (orientation: landscape) {
   body {
-    overflow: hidden;        /* keep the page itself fixed */
+    overflow: hidden;
     height: 100vh;
   }
 
@@ -240,7 +310,7 @@ body {
   }
 
   .sidebar {
-    overflow-y: auto;        /* sidebar scrolls independently within its column */
+    overflow-y: auto;
     height: 100vh;
   }
 }

@@ -3,9 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blob</title>
+    <meta name="description" content="BLOB Paris — Bureau Laboratoire en Olfaction et Bien-être. Parfum sur-mesure, identité olfactive de marque, ateliers et résidences artistiques olfactives avec Delphine Jacquemart." />
+    <title>BLOB Paris — Bureau Laboratoire en Olfaction et Bien-être</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧴</text></svg>" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
+    <!-- Google Fonts: Cormorant Garamond for display, Jost for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
     <!-- Font Awesome: icon library loaded from the internet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   </head>
@@ -20,6 +25,9 @@
           <source src="blob.mp4" type="video/mp4" />
           <source src="blob.mov" type="video/quicktime" />
         </video>
+
+        <!-- Sound hint, fades after first interaction -->
+        <div class="sound-hint" id="soundHint">Cliquer pour activer le son</div>
 
         <!-- Sound toggle button, bottom-right corner of the video -->
         <button class="sound-btn" id="soundBtn" aria-label="Activer le son">
@@ -39,37 +47,43 @@
 
           <details>
             <summary>Services</summary>
-            <ul>
-              <li>Parfum sur-mesure</li>
-              <li>Identité olfactive de marque</li>
-              <li>Développement produits parfumés</li>
-              <li>Consulting en suivi de projet et stratégie</li>
-              <li>Évènements parfumés, ateliers et séminaires</li>
-              <li>Rédaction de contenus</li>
-              <li>Protocoles bien-être parfumés</li>
-              <li>Travaux de recherche scientifique</li>
-              <li>Résidences artistiques olfactives</li>
-            </ul>
+            <div class="accordion-body">
+              <ul>
+                <li>Parfum sur-mesure</li>
+                <li>Identité olfactive de marque</li>
+                <li>Développement produits parfumés</li>
+                <li>Consulting en suivi de projet et stratégie</li>
+                <li>Évènements parfumés, ateliers et séminaires</li>
+                <li>Rédaction de contenus</li>
+                <li>Protocoles bien-être parfumés</li>
+                <li>Travaux de recherche scientifique</li>
+                <li>Résidences artistiques olfactives</li>
+              </ul>
+            </div>
           </details>
 
           <details>
             <summary>À propos</summary>
-            <p>Explorant les mécanismes du système olfactif, Delphine Jacquemart est artisan parfumeur. Elle mène des projets de recherche et de développement encadrés par l'entreprise BLOB Paris qu'elle a fondé et dirige depuis 2019.</p>
+            <div class="accordion-body">
+              <p>Explorant les mécanismes du système olfactif, Delphine Jacquemart est artisan parfumeur. Elle mène des projets de recherche et de développement encadrés par l'entreprise BLOB Paris qu'elle a fondé et dirige depuis 2019.</p>
+            </div>
           </details>
 
           <details>
             <summary>Contact</summary>
-            <div class="contact-info">
-              <a href="mailto:jacquemartd@gmail.com" class="contact-email">
-                jacquemartd [at] gmail.com
-              </a>
-              <div class="contact-socials">
-                <a href="https://www.instagram.com/blob.paris/" target="_blank" aria-label="Instagram">
-                  <i class="fa-brands fa-instagram"></i>
+            <div class="accordion-body">
+              <div class="contact-info">
+                <a href="mailto:jacquemartd@gmail.com" class="contact-email">
+                  jacquemartd [at] gmail.com
                 </a>
-                <a href="https://www.linkedin.com/in/delphine-jacquemart-aa969170/" target="_blank" aria-label="LinkedIn">
-                  <i class="fa-brands fa-linkedin-in"></i>
-                </a>
+                <div class="contact-socials">
+                  <a href="https://www.instagram.com/blob.paris/" target="_blank" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/in/delphine-jacquemart-aa969170/" target="_blank" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                  </a>
+                </div>
               </div>
             </div>
           </details>
@@ -80,25 +94,49 @@
 
     </div>
 
-    <!-- JavaScript: sound toggle logic -->
+    <!-- JavaScript: sound toggle + accordion animation -->
     <script>
       const video    = document.getElementById('mainVideo');
-      const btn      = document.getElementById('soundBtn');
       const icon     = document.getElementById('soundIcon');
       const panel    = document.getElementById('videoPanel');
+      const hint     = document.getElementById('soundHint');
 
       function toggleSound() {
         video.muted = !video.muted;
-        // Swap the icon depending on state
-        if (video.muted) {
-          icon.className = 'fa-solid fa-volume-xmark';
-        } else {
-          icon.className = 'fa-solid fa-volume-high';
-        }
+        icon.className = video.muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+        hint.classList.add('hidden');
       }
 
-      // Clicking anywhere on the video panel, or the button, toggles sound
       panel.addEventListener('click', toggleSound);
+
+      // Animated accordions: animate height on open/close
+      document.querySelectorAll('.sidebar details').forEach(details => {
+        const summary = details.querySelector('summary');
+        const content = details.querySelector('.accordion-body');
+
+        summary.addEventListener('click', e => {
+          e.preventDefault();
+
+          if (details.open) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            requestAnimationFrame(() => {
+              content.style.maxHeight = '0';
+              content.addEventListener('transitionend', () => {
+                details.removeAttribute('open');
+              }, { once: true });
+            });
+          } else {
+            details.setAttribute('open', '');
+            content.style.maxHeight = '0';
+            requestAnimationFrame(() => {
+              content.style.maxHeight = content.scrollHeight + 'px';
+              content.addEventListener('transitionend', () => {
+                content.style.maxHeight = 'none';
+              }, { once: true });
+            });
+          }
+        });
+      });
     </script>
 
   </body>
